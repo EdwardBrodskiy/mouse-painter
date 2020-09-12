@@ -1,7 +1,7 @@
 import cv2
 from converter import *
 
-image_name = "space-invader.jpg"  # input('Enter file name: ')
+image_name = "black-box.jpg"  # input('Enter file name: ')
 
 image_cv2 = cv2.imread(f'imgs/{image_name}')
 

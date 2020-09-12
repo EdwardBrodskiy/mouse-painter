@@ -14,11 +14,11 @@ def convert(img: np.ndarray, size=None):
 
     counter = 0
     prev_color = 0
-    for r in range(0, height - chunk[1], chunk[1]):
+    for y in range(0, height, chunk[1]):
         counter = 0
         c_counter = 0
-        for c in range(0, width - chunk[0], chunk[0]):
-            section = img[r:r + chunk[1], c:c + chunk[0], :]
+        for x in range(0, width, chunk[0]):
+            section = img[y:y + chunk[1], x:x + chunk[0], :]
             color = derive_color_bw(section)
             if prev_color != color:
                 instruction_set.append([0, prev_color, counter])
@@ -31,6 +31,7 @@ def convert(img: np.ndarray, size=None):
         instruction_set.append([0, 0, -(c_counter + counter)])
         instruction_set.append([1, 0, 1])
 
+    print(instruction_set)
     save(instruction_set)
 
 
@@ -41,7 +42,8 @@ def derive_color_bw(color: np.ndarray):
 def save(instructions):
     with open('arduino/main/img.h', 'w') as file:
         file.write('#define len ' + str(len(instructions)) + '\n')
-        file.write('int path[len][3] = {\n')
-        for instruction in instructions:
-            file.write('{ ' + str(instruction[0]) + ', ' + str(instruction[1]) + ', ' + str(instruction[2]) + ' },\n')
-        file.write('};\n')
+        for key, name in enumerate(('axises', 'colors', 'distances')):
+            file.write('int ' + name + '[] = { ')
+            for instruction in instructions:
+                file.write(str(instruction[key]) + ', ')
+            file.write('};\n')

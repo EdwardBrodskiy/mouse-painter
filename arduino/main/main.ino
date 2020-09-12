@@ -17,7 +17,7 @@ void moveX(int num) {
   int dir = sign(num);
   for (int i = 0; i < abs(num) ; i++) {
     DigiMouse.moveX(dir);
-    DigiMouse.delay(4);
+    DigiMouse.delay(1);
   }
 }
 
@@ -25,7 +25,7 @@ void moveY(int num) {
   int dir = sign(num);
   for (int i = 0; i < abs(num) ; i++) {
     DigiMouse.moveY(dir);
-    DigiMouse.delay(4);
+    DigiMouse.delay(1);
   }
 }
 void loop() {
@@ -33,22 +33,26 @@ void loop() {
   moveY(10);
   moveX(-10);
   moveY(-10);
+  int prev_color = 0;
   for (int i = 0; i < len ; i++) {
-    int axis = path[i][0];
-    int color = path[i][1];
-    int distance = path[i][2];
-    if (color == 1) {
-      DigiMouse.setButtons(1 << 0); //left click
-    } else {
-      DigiMouse.setButtons(0);  //unclick all
+    int axis = axises[i];
+    int color = colors[i];
+    int distance = distances[i] * 30;
+    if(prev_color != color){
+      if (color == 1) {
+        DigiMouse.setButtons(1 << 0); //left click
+      } else {
+        DigiMouse.setButtons(0);  //unclick all
+      }
     }
-    
-    DigiMouse.delay(50);
+    DigiMouse.delay(200);
     
     if (axis == 0) { // x-axis
       moveX(distance);
     } else { // y-axis
       moveY(distance);
     }  
+
+    prev_color = color;
   }
 }
