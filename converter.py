@@ -17,6 +17,7 @@ def convert(img: np.ndarray, size=None):
     prev_color = 0
     for y in range(size[1]):
         counter = 0
+        color = 0
         for x in range(size[0]):
             color = derive_color_bw(img[y, x, :])
             if prev_color != color:

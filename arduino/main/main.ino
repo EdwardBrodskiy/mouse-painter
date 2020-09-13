@@ -1,11 +1,11 @@
 #include <DigiMouse.h>
 #include "img.h"
 
-#define scale 10
+#define scale 100
 
 void setup() {
 
-  DigiMouse.begin(); //start or reenumerate USB - BREAKING CHANGE from old versions that didn't require this
+  DigiMouse.begin();
 
 
   DigiMouse.delay(2000);
@@ -19,7 +19,7 @@ void moveX(int num) {
   int dir = sign(num);
   for (int i = 0; i < abs(num) ; i++) {
     DigiMouse.moveX(dir);
-    DigiMouse.delay(4);
+    DigiMouse.delay(1);
   }
 }
 
@@ -27,7 +27,7 @@ void moveY(int num) {
   int dir = sign(num);
   for (int i = 0; i < abs(num) ; i++) {
     DigiMouse.moveY(dir);
-    DigiMouse.delay(4);
+    DigiMouse.delay(1);
   }
 }
 void loop() {
@@ -53,9 +53,11 @@ void loop() {
 
     width_count += distance;
     if (width_count >= width) {
+      DigiMouse.setButtons(0);  //unclick all
+      color = 0;
       width_count = 0;
       DigiMouse.delay(200);
-      moveX(-width * scale);
+      moveX(-((width ) * scale ));
       DigiMouse.delay(200);
       moveY(1 * scale);
     }
